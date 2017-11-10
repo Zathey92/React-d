@@ -28,7 +28,7 @@ export function fetchDashBoard(){
 
 
             step.next(dispatch);
-            let final_lists=[]
+            let final_lists=[];
             for (let id of idBoards){
                 response = await api.get_board_names_and_lists(id);
                 let board_name = response.name;
@@ -42,6 +42,8 @@ export function fetchDashBoard(){
             };
             step.next(dispatch);
             let result = {};
+            let aux = {};
+            let maxTime = moment();
             const iterPerStep = Math.round(final_lists.length/4);
             let iter = 0;
             for (let list of final_lists) {
@@ -51,48 +53,58 @@ export function fetchDashBoard(){
                 }
                 iter+=1;
                 let response = await api.get_list_info(list.id);
-                let max_due = 0;
+                let maxDue = 0;
                 let members = [];
+
                 for(let card of response){
                     let due =card.due;
                     if(card.due!==undefined){
-                        if(moment(due)>moment(max_due)){
-                            max_due=due;
+                        if(moment(due)>moment(maxDue)){
+                            maxDue=due;
                         }
 
                     }
-                    for(let member_id of card.idMembers){
-                        if(member_id !== undefined){
-                            members.push(member_id);
+                    for(let memberId of card.idMembers){
+                        if(memberId !== undefined){
+                            members.push(memberId);
                         }
                     }
                 }
 
-                for(let member_id of members){
-                    let month = moment(max_due).format("MMMM-YY");
-                    if(moment()<=moment(max_due)){
+                for(let memberId of members){
+                    let month = moment(maxDue).format("MMMM-YY");
+                    if(moment()<=moment(maxDue)){
+                        if(moment(maxTime)<moment(maxDue)){
+                            maxTime = maxDue;
+                        }
                         let memberObject = {
-                            [all_members[member_id]]: {
+                            [all_members[memberId]]: {
                                 [month]: {
                                     [list.id]: {
                                         bname: list.bname,
                                         lname: list.lname,
                                         url: list.url,
-                                        due: max_due
+                                        due: maxDue
                                     }
                                 }
                             }
                         };
-                        let aux = api.mergeDeep(result,memberObject);
-                        result=aux;
+                        aux = api.mergeDeep(result,memberObject);
+                        result = aux;
                     }
                 }
 
             }
+            result = Object.keys(result).map((key) => {
 
+                let aux = {name:key,key:key};
+
+                return api.mergeDeep(aux,result[key]);
+            });
             dispatch({
                 type:FETCH_DASHBOARD_END,
                 payload:result,
+                maxMonth:moment(maxTime).format("MMMM-YY"),
             });
 
         }catch(e){
