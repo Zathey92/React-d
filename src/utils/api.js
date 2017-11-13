@@ -54,5 +54,22 @@ export default{
         return output;
     },
 
+    async refractorBoard(response){
+        let idBoards=[];
+        let all_members = {};
+        for(let team of response){
+            for(let id of team.idBoards){
+                let board_members= await this.get_members(id);
+                for(let member of board_members){
+
+                    all_members[[member.id]] = member.fullName;
+
+                }
+                idBoards.push(id);
+            }
+        }
+        return [idBoards, all_members];
+    }
+
 }
 

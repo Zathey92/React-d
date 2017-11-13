@@ -11,35 +11,23 @@ export function fetchDashBoard(){
         dispatch({ type:FETCH_DASHBOARD_START });
 
         try{
-            let all_members = {};
-            let response = await api.get_boards_id();
-            let idBoards = [];
-            for(let team of response){
-                for(let id of team.idBoards){
-                    let board_members= await api.get_members(id);
-                    for(let member of board_members){
-
-                        all_members[[member.id]] = member.fullName;
-
-                    }
-                    idBoards.push(id);
-                }
-            }
-
-
+            let response = await api.refractorBoard(await api.get_boards_id());
+            let all_members = response[1];
+            let idBoards= response[0];
             step.next(dispatch);
+
             let final_lists=[];
             for (let id of idBoards){
                 response = await api.get_board_names_and_lists(id);
                 let board_name = response.name;
                 let board_url = response.url;
                 for (let list of response.lists){
-                    let refracted_list=api.refractor_list(list,board_name,board_url)
+                    let refracted_list=api.refractor_list(list,board_name,board_url);
                     if(refracted_list){
                         final_lists.push(refracted_list);
                     }
                 }
-            };
+            }
             step.next(dispatch);
             let result = {};
             let aux = {};
@@ -74,33 +62,36 @@ export function fetchDashBoard(){
                 for(let memberId of members){
                     let month = moment(maxDue).format("MMMM-YY");
                     if(moment()<=moment(maxDue)){
-                        if(moment(maxTime)<moment(maxDue)){
-                            maxTime = maxDue;
-                        }
-                        let memberObject = {
-                            [all_members[memberId]]: {
-                                [month]: {
-                                    [list.id]: {
-                                        bname: list.bname,
-                                        lname: list.lname,
-                                        url: list.url,
-                                        due: maxDue
+                            if (moment(maxTime) < moment(maxDue)) {
+                                maxTime = maxDue;
+                            }
+                            let memberObject = {
+                                [all_members[memberId]]: {
+                                    [month]: {
+                                        [list.bname]: {
+                                            bname: list.bname,
+                                            lname: list.lname,
+                                            url: list.url,
+                                            due: maxDue
+                                        }
                                     }
                                 }
-                            }
-                        };
-                        aux = api.mergeDeep(result,memberObject);
-                        result = aux;
+                            };
+                            aux = api.mergeDeep(result, memberObject);
+                            result = aux;
+
                     }
                 }
 
             }
+            /*
             result = Object.keys(result).map((key) => {
 
                 let aux = {name:key,key:key};
 
                 return api.mergeDeep(aux,result[key]);
             });
+            */
             dispatch({
                 type:FETCH_DASHBOARD_END,
                 payload:result,

@@ -7,7 +7,7 @@ const initialState = {
     step:0,
     data: [],
     maxMonth:moment().format("MMMM-YY"),
-}
+};
 
 export default function(state = initialState, action) {
 

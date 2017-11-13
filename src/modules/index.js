@@ -6,7 +6,7 @@ class Container extends Component {
     render() {
         return (
             <div className={css(styles.contaier)}>
-                <DashBoard />;
+                <DashBoard />
             </div>
         );
     }
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
+        width:'100%',
 
 
     },

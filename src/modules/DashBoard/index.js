@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {css, StyleSheet} from 'aphrodite';
 import { Progress } from 'antd';
 //import ReactLoading from 'react-loading';
-import DashTable from "./table";
+import DashTable from "./Table/table";
 import {fetchDashBoard} from "./actions/index";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
@@ -37,7 +37,8 @@ class DashBoard extends Component {
                     return progress(100,"exception");
             }
         }else if(this.props.isLoaded){
-            return <DashTable />;
+            return <DashTable maxMonth={ this.props.maxMonth } data={ this.props.data }/>;
+            //return <DashTable />;
         }else{
             return <h2>Error</h2>
         }
@@ -74,6 +75,8 @@ function mapStateToProps(state) {
         isLoading: state.trello.isLoading,
         isLoaded: state.trello.isLoaded,
         step: state.trello.step,
+        data: state.trello.data,
+        maxMonth: state.trello.maxMonth,
     };
 }
 

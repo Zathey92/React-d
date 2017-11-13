@@ -27,11 +27,24 @@ class DashTable extends Component {
 
         };
         const project = (boardName, url) => {
-            return (<a href={ url } target="_blank" className={ css(styles.con) }>{boardName}</a>);
+            return (<a key ={url} href={ url } target="_blank" className={ css(styles.con) }>{boardName}</a>);
         };
+
+        const monthDivs= (months)=> {
+            let divs=[];
+            let i= 0;
+            for(var month in months){
+                divs.push(<div key={i} className={css(styles.center)}>{month}</div>);
+                i+=1;
+
+            }
+            return divs;
+        };
+        /*
         const monthColumn = (month)=> {
             return {title:<div className={css(styles.center)}>{month}</div>, dataIndex:month, key:month,};
         };
+        /*
         const columns = (maxMonth)=>{
             let aux = moment().format("MMMM-YY");
             let columns = [{title:<div className={css(styles.center)}>Name</div>, width:150, dataIndex:'name', key:'name', fixed:'left'}];
@@ -42,12 +55,39 @@ class DashTable extends Component {
             return columns;
 
         };
+        */
+        const columns = (maxMonth)=>{
+            let aux = moment().format("MMMM-YY");
+            let months = [];
+            let columns = [
+                {
+                    title:<div className={css(styles.center)}>Name</div>,
+                    width:150,
+                    dataIndex:'name',
+                    key:'name',
+                    fixed:'left'
+                }];
+
+            while(aux!==maxMonth){
+                months.push(aux);
+                aux = moment(aux,"MMMM-YY").add(1,"month").format("MMMM-YY");
+            }
+            let dateColumn = {
+                title: <div>{ monthDivs(months) }</div>,
+                width:600,
+                dataIndex:'dates',
+                key:'dates',
+            };
+            columns.push(dateColumn);
+            return columns;
+
+        };
 
         const tableData=(data)=>{
             for(let member of data){
                 for(let month of Object.keys(member)){
                     if(month!=='name'&&month!=='key'){
-                        let boardsName=[]
+                        let boardsName=[];
                         let boards = member[month];
                         for(let boardId of Object.keys(boards)){
                             boardsName.push([boards[boardId].bname,boards[boardId].url]);
@@ -78,16 +118,22 @@ const styles = StyleSheet.create({
         color:'white',
         marginTop:'5px',
         padding:'15px 5px 15px 5px',
-        borderRadius: '25px',
+        borderRadiusLeft: '25px',
         textAlign:'center',
-        marginLeft:'-55px',
-        alignContent:'top',
+        justifyItems:'top',
+        display:'flex',
+        flex: '1 1 100%',
+        flexDirection: 'row',
 
 
     },
     cell:{
         display:'flex',
         flexDirection:'column',
+        flex:'1 1 100%',
+        width:'100%',
+        alignItems:'flex-start',
+
 
 
     },
