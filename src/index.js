@@ -19,8 +19,7 @@ const createStoreWithMiddleware = applyMiddleware(Thunk.withExtraArgument(api),l
 
 const styles = StyleSheet.create({
     container: {
-
-
+        width:'100%',
     },
 
 });

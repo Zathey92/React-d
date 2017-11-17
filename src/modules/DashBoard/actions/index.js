@@ -68,9 +68,9 @@ export function fetchDashBoard(){
                             let memberObject = {
                                 [all_members[memberId]]: {
                                     [month]: {
-                                        [list.bname]: {
+                                        [list.lname]: {
                                             bname: list.bname,
-                                            lname: list.lname,
+                                            //lname: list.lname,
                                             url: list.url,
                                             due: maxDue
                                         }
@@ -84,14 +84,26 @@ export function fetchDashBoard(){
                 }
 
             }
-            /*
-            result = Object.keys(result).map((key) => {
 
-                let aux = {name:key,key:key};
+            let now = moment().format("MMMM-YY");
+            result = Object.keys(result).map((name) => {
+                let months = result[name];
+                let sprints=[];
+                for(let month in months) {
+                    let sprintData=months[month]
+                    for(let sprintName in sprintData){
+                        let sprint = sprintData[sprintName];
+                        let diff = moment(month,"MMMM-YY").diff(moment(now,"MMMM-YY"),"months");
+                        console.log(sprint.url);
+                        sprints.push({due:sprint.due,url:sprint.url,sprint:sprintName,project:sprint.bname, monthsFromNow:diff});
+                    }
 
-                return api.mergeDeep(aux,result[key]);
+                }
+                let aux = {name:name,sprints:sprints};
+
+                return aux;
             });
-            */
+
             dispatch({
                 type:FETCH_DASHBOARD_END,
                 payload:result,

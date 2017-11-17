@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import {css, StyleSheet} from 'aphrodite';
 import { Progress } from 'antd';
-//import ReactLoading from 'react-loading';
-import DashTable from "./Table/table";
 import {fetchDashBoard} from "./actions/index";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
+import Graph from "./Graph/graph";
 
 class DashBoard extends Component {
 
@@ -37,10 +36,13 @@ class DashBoard extends Component {
                     return progress(100,"exception");
             }
         }else if(this.props.isLoaded){
-            return <DashTable maxMonth={ this.props.maxMonth } data={ this.props.data }/>;
+            if(this.props.data.length==0){
+                return <div><h2 style={{textAlign:'center'}}>No hay datos que Mostrar</h2><p>Compruebe que exista en Trello <b>tareas</b>, <b>usuarios</b>, y una <b>dueDate</b> mayor que la fecha actual.</p></div>
+            }
+            return <Graph minWidth={110} maxMonth={ this.props.maxMonth } data={ this.props.data }/>;
             //return <DashTable />;
         }else{
-            return <h2>Error</h2>
+            return progress(0);
         }
     }
 
@@ -58,12 +60,14 @@ const styles = StyleSheet.create({
         display:'flex',
         justifyContent:'center',
         alignItems:'center',
-        width:'100%',
+        alignSelf:'center',
+        width:'90%',
+        marginTop:'20px',
 
 
     },
     progress: {
-        paddingTop:'250px',
+        paddingTop:'220px',
     },
 
 });
