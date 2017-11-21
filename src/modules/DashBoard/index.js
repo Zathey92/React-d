@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {css, StyleSheet} from 'aphrodite';
 import { Progress } from 'antd';
-import {fetchDashBoard} from "./actions/index";
+import {fetchDashboard} from "./actions/index";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import Graph from "./Graph/graph";
@@ -9,17 +9,17 @@ import Graph from "./Graph/graph";
 class DashBoard extends Component {
 
     componentDidMount(){
-        this.props.fetchDashBoard();
+        this.props.fetchDashboard();
     }
-    loadContent(){
+    loadContent(props){
         const progress = (percent,status="active") =>{
             return <div className={css(styles.progress)}>
                 <Progress type="dashboard" status={status} percent={percent} />
             </div>
         };
-        if(this.props.isLoading){
+        if(props.isLoading){
             //return <ReactLoading color={'#6666ff'}/>;
-            switch (this.props.step){
+            switch (props.step){
                 case 0:
                     return progress(0);
                 case 1:
@@ -35,14 +35,17 @@ class DashBoard extends Component {
                 default:
                     return progress(100,"exception");
             }
-        }else if(this.props.isLoaded){
-            if(this.props.data.length==0){
+        }else if(props.isLoaded){
+            if(props.data.length==0){
                 return <div><h2 style={{textAlign:'center'}}>No hay datos que Mostrar</h2><p>Compruebe que exista en Trello <b>tareas</b>, <b>usuarios</b>, y una <b>dueDate</b> mayor que la fecha actual.</p></div>
             }
-            return <Graph minWidth={110} maxMonth={ this.props.maxMonth } data={ this.props.data }/>;
+            return <Graph minWidth={110} maxMonth={ props.maxMonth } data={ props.data }/>;
             //return <DashTable />;
-        }else{
+        }else if(!props.error){
             return progress(0);
+        }else{
+            return <div><h2 style={{textAlign:'center'}}>{props.error}</h2><p>Ha ocurrido un error durante la petición a trello, contacte con el administrador.</p></div>
+
         }
     }
 
@@ -50,7 +53,7 @@ class DashBoard extends Component {
     render() {
         return (
             <div className={css(styles.container)}>
-                {this.loadContent()}
+                {this.loadContent(this.props)}
             </div>
         );
     }
@@ -72,7 +75,7 @@ const styles = StyleSheet.create({
 
 });
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({ fetchDashBoard }, dispatch)
+    return bindActionCreators({ fetchDashboard }, dispatch)
 }
 function mapStateToProps(state) {
     return {
@@ -81,6 +84,7 @@ function mapStateToProps(state) {
         step: state.trello.step,
         data: state.trello.data,
         maxMonth: state.trello.maxMonth,
+        error: state.trello.error,
     };
 }
 

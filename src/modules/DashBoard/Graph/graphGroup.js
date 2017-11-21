@@ -5,6 +5,7 @@ import GraphBar from "./graphBar";
 class GraphGroup extends Component {
 
     loadGroup =(props)=>{
+        //console.log(this.props.width*100);
         return props.data.map((bar)=>{
             //return(<div  className={css(styles.bar)} style={{width:(bar.value*20)+'%'}}>{bar.name}</div>);
             return <GraphBar style={{width:(this.props.width*25+"%"),minWidth:(this.props.width*100)}} getColor={props.getColor} key={bar.name+bar.value} url={bar.url} width={bar.value} name={bar.name}/>

@@ -4,10 +4,10 @@ import {css, StyleSheet} from 'aphrodite';
 class GraphBar extends Component {
 
     render() {
-        console.log("width: "+this.props.width+" name: " +this.props.name+ " color: "+ this.props.getColor(this.props.name+this.props.width));
+        //console.log("width: "+this.props.width+" name: " +this.props.name+ " color: "+ this.props.getColor(this.props.name+this.props.width));
         return (
 
-            <a target="_blank" href={this.props.url} style={{minWidth:(this.props.width*this.props.minWidth),width:(this.props.width*25)+'%'}} className={css(styles.bar,styles.hover)}>
+            <a target="_blank" href={this.props.url} style={{minWidth:100,width:(this.props.width*25)+'%'}} className={css(styles.bar,styles.hover)}>
                 <div style={{backgroundColor:this.props.getColor(this.props.name+this.props.width)}} className={css(styles.border)}>
                     <div className={css(styles.text)}> {this.props.name}</div>
                 </div>
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
         display:'flex',
         justifyContent:'flex-start',
         width:'100%',
+        alignItems:'center',
         //height:'100%',
         margin:'3px 0px 3px 0px',
         borderRadius: '0px 10px 10px 0px',

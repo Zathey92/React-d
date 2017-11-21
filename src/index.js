@@ -12,10 +12,10 @@ import reducers from './reducers';
 import Container from "./modules/index";
 import Header from './modules/Header'
 import './index.css';
-import api from './utils/api'
+import {trello,step} from './utils/api'
 
 
-const createStoreWithMiddleware = applyMiddleware(Thunk.withExtraArgument(api),logger)(createStore);
+const createStoreWithMiddleware = applyMiddleware(Thunk.withExtraArgument({trello,step}),logger)(createStore);
 
 const styles = StyleSheet.create({
     container: {

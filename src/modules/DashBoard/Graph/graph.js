@@ -15,20 +15,22 @@ var colors={
 const selectedColors={};
 const getColor=(sprint)=>{
     if(sprint in selectedColors){
-        console.log("selected: "+selectedColors[sprint]+" name: "+sprint);
+        //console.log("selected: "+selectedColors[sprint]+" name: "+sprint);
+        console.log(selectedColors[sprint]);
         return selectedColors[sprint];
     }else{
         for(let color in colors){
             if(!colors[color]){
                 selectedColors[sprint]=color;
                 colors[color]=true;
+                console.log(color);
                 return color
             }
         }
         for(let color in colors){
             colors[color]=false;
         }
-
+        return getColor(sprint);
     }
 };
 
@@ -39,7 +41,7 @@ const getGraphData = (data,width,minWidth)=>{
         let user = data[i];
         let name = user.name;
         let groupData = user.sprints.map((sprint)=>{
-            console.log(sprint);
+            //console.log(sprint);
             return {
                 name:sprint.project,
                 url:sprint.url,
@@ -101,6 +103,7 @@ const styles = StyleSheet.create({
         display:'flex',
         width:'100%',
         flexDirection:'row',
+        maxHeight:'50%',
     },
     xAxis:{
         display:'flex',
