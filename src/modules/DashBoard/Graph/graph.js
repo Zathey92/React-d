@@ -5,25 +5,37 @@ import GraphXLabel from "./graphXLabel";
 import GraphYLabel from "./graphYLabel";
 import GraphGroup from "./graphGroup";
 
+/*
 var colors={
+
     '#067bc2':false,
     '#d56062':false,
     '#84bcda': false,
     '#ecc30b':false,
     '#f37748':false,
+
+};
+     */
+var colors={
+    '#727272':false,
+    '#f1595f':false,
+    '#79c36a': false,
+    '#599ad3':false,
+    '#f9a65a':false,
+    '#9e66ab':false,
+    '#cd7058':false,
+    '#d77fb3':false,
 };
 const selectedColors={};
 const getColor=(sprint)=>{
     if(sprint in selectedColors){
         //console.log("selected: "+selectedColors[sprint]+" name: "+sprint);
-        console.log(selectedColors[sprint]);
         return selectedColors[sprint];
     }else{
         for(let color in colors){
             if(!colors[color]){
                 selectedColors[sprint]=color;
                 colors[color]=true;
-                console.log(color);
                 return color
             }
         }

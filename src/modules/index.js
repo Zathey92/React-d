@@ -4,6 +4,7 @@ import DashBoard from './DashBoard';
 import {authorize} from "./DashBoard/actions/index";
 import connect from "react-redux/es/connect/connect";
 import bindActionCreators from "redux/es/bindActionCreators";
+import axios from 'axios';
 class Container extends Component {
 
     componentDidMount(){
@@ -11,9 +12,13 @@ class Container extends Component {
             this.props.authorize();
         }
     }
+    componentUnMount(){
+        axios.Cancel('request');
+    }
     content(){
-        if(!this.props.isAuthorized) return <h2>Esperando Authorización</h2>;
-        return <DashBoard/>
+        if(this.props.isAuthorized) return <DashBoard/>
+        if(this.props.isWaitingAuth) return <div style={{textAlign:'center'}}><h2 >Esperando Autorización</h2><p>Si no se ha abierto trello, <b style={{cursor: 'pointer'}} onClick={this.props.authorize}>click aqui</b></p></div>;
+
     }
     render() {
         return (
@@ -39,6 +44,8 @@ function mapDispatchToProps(dispatch){
 function mapStateToProps(state) {
     return {
         isAuthorized: state.trello.isAuthorized,
+        isLoadingAuth:state.trello.isLoadingAuth,
+        isWaitingAuth:state.trello.isWaitingAuth,
     };
 }
 

@@ -9,6 +9,7 @@ import Graph from "./Graph/graph";
 class DashBoard extends Component {
 
     componentDidMount(){
+        console.log('fetching,mounting');
         this.props.fetchDashboard();
     }
     loadContent(props){
@@ -36,15 +37,15 @@ class DashBoard extends Component {
                     return progress(100,"exception");
             }
         }else if(props.isLoaded){
-            if(props.data.length==0){
-                return <div><h2 style={{textAlign:'center'}}>No hay datos que Mostrar</h2><p>Compruebe que exista en Trello <b>tareas</b>, <b>usuarios</b>, y una <b>dueDate</b> mayor que la fecha actual.</p></div>
+            if(props.data.length===0){
+                return <div style={{textAlign:'center'}}><h2>No hay datos que Mostrar</h2><p>Compruebe que exista en Trello <b>tareas</b>, <b>usuarios</b>, y una <b>dueDate</b> mayor que la fecha actual.</p></div>
             }
             return <Graph minWidth={110} maxMonth={ props.maxMonth } data={ props.data }/>;
             //return <DashTable />;
         }else if(!props.error){
             return progress(0);
         }else{
-            return <div><h2 style={{textAlign:'center'}}>{props.error}</h2><p>Ha ocurrido un error durante la petición a trello, contacte con el administrador.</p></div>
+            return <div style={{textAlign:'center'}}><h2>{props.error}</h2><p>Ha ocurrido un error durante la petición a trello, contacte con el administrador.</p></div>
 
         }
     }

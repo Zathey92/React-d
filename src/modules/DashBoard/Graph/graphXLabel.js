@@ -14,8 +14,15 @@ class GraphXLabel extends Component {
         );
     }
 }
+const latoFont = {
+    fontFamily: "Lato",
+    fontStyle: "normal",
+    fontWeight: "normal",
+    src: "url('Lato.woff2') format('woff2')"
+};
 const styles = StyleSheet.create({
     label:{
+        fontFamily: [latoFont, "sans-serif"],
         display:'flex',
         width:'25%',
         justifyContent:'center',
