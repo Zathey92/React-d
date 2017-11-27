@@ -1,4 +1,5 @@
-import moment from 'moment';
+import {fetchBoardsAndMembers} from "./FetchBoardsAndMembers";
+import {getToken} from "./Authorize";
 export const FETCH_DASHBOARD_START = 'FETCH_DASHBOARD_START';
 export const FETCH_DASHBOARD_STEP = 'FETCH_DASHBOARD_STEP';
 export const FETCH_DASHBOARD_END = 'FETCH_DASHBOARD_END';
@@ -10,31 +11,13 @@ export const WAITING_AUTHORIZATION = 'WAITING_AUTHORIZATION';
 
 
 export const fetchDashboard = () => async (dispatch, getState,{trello,step}) => {
-
-    dispatch({ type:FETCH_DASHBOARD_START });
     step.value=0;
-    let response = await trello.fetchBoardsAndMembers(dispatch);
-    if(!response)return;
-    step.next(dispatch);
-    let allMembers = response[1];
-    let idBoards= response[0];
-    response = await trello.fetchSprints(idBoards,dispatch);
-    if(!response)return;
-    step.next(dispatch);
-    response = await trello.fetchSprintsPerMember(response,allMembers,dispatch);
-    if(!response)return;
-    step.next(dispatch);
-    let maxTime = response[1];
-    let result =  trello.graphRefactor(response[0]);
-    return dispatch({
-        type:FETCH_DASHBOARD_END,
-        payload:result,
-        maxMonth:moment(maxTime).format("MMMM-YY"),
-    });
+    dispatch({ type:FETCH_DASHBOARD_START });
+    return dispatch(fetchBoardsAndMembers());
 };
 
 export const authorize= () => async (dispatch, getState,{trello,step}) => {
-    trello.authorize(dispatch);
+    return dispatch(getToken());
 };
 
 export const logout=()=> async (dispatch, getState,{trello,step}) => {

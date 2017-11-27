@@ -12,7 +12,8 @@ import reducers from './reducers';
 import Container from "./modules/index";
 import Header from './modules/Header'
 import './index.css';
-import {trello,step} from './utils/api'
+import {trello} from './utils/trello'
+import {step} from './utils/api'
 
 
 const createStoreWithMiddleware = applyMiddleware(Thunk.withExtraArgument({trello,step}),logger)(createStore);
@@ -26,12 +27,13 @@ const styles = StyleSheet.create({
 ReactDOM.render(
 
     <Provider store={createStoreWithMiddleware(reducers)}>
-        <div className={css(styles.container)}>
-            <Header />
             <Router>
-                <Route path={"/"} component={ Container } />
+                <div className={css(styles.container)}>
+                    <Header />
+                    <Route path={"/"} component={ Container }/>
+                </div>
             </Router>
-        </div>
+
     </Provider>
     , document.getElementById('root'));
 registerServiceWorker();

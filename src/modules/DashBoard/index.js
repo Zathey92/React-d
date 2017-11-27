@@ -9,7 +9,6 @@ import Graph from "./Graph/graph";
 class DashBoard extends Component {
 
     componentDidMount(){
-        console.log('fetching,mounting');
         this.props.fetchDashboard();
     }
     loadContent(props){

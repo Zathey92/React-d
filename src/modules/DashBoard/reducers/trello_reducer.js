@@ -1,7 +1,7 @@
 import {
     AUTHORIZE, FETCH_DASHBOARD_END, FETCH_DASHBOARD_ERROR, FETCH_DASHBOARD_START,
     FETCH_DASHBOARD_STEP, LOGOUT, WAITING_AUTHORIZATION
-} from "./actions/index";
+} from "../actions/index";
 import moment from "moment";
 
 const initialState = {

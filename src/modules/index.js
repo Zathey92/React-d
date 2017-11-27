@@ -5,8 +5,8 @@ import {authorize} from "./DashBoard/actions/index";
 import connect from "react-redux/es/connect/connect";
 import bindActionCreators from "redux/es/bindActionCreators";
 import axios from 'axios';
-class Container extends Component {
 
+class Container extends Component {
     componentDidMount(){
         if(!this.props.isAuthorized){
             this.props.authorize();
@@ -17,7 +17,7 @@ class Container extends Component {
     }
     content(){
         if(this.props.isAuthorized) return <DashBoard/>
-        if(this.props.isWaitingAuth) return <div style={{textAlign:'center'}}><h2 >Esperando Autorización</h2><p>Si no se ha abierto trello, <b style={{cursor: 'pointer'}} onClick={this.props.authorize}>click aqui</b></p></div>;
+        if(this.props.isWaitingAuth) return <div style={{textAlign:'center'}}><h2 >Esperando Autorización</h2><p>Si no se ha abierto trello, <b style={{cursor: 'pointer'}} onClick={this.props.authorize}>click aquí</b></p></div>;
 
     }
     render() {

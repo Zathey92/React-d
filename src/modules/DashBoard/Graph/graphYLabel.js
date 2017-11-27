@@ -4,7 +4,6 @@ import {css, StyleSheet} from 'aphrodite';
 class GraphYLabel extends Component {
 
     render() {
-
         return (
             <div style={{height:(this.props.number)*41+10}} className={css(styles.label)}>
                 <div className={css(styles.text)}>
@@ -13,17 +12,10 @@ class GraphYLabel extends Component {
                 <div className={css(styles.gap)}>
                 </div>
             </div>
-
-
         );
     }
 }
-const latoFont = {
-    fontFamily: "Lato",
-    fontStyle: "normal",
-    fontWeight: "normal",
-    src: "url('Lato.woff2') format('woff2')"
-};
+
 const styles = StyleSheet.create({
     label:{
       display:'flex',
@@ -31,7 +23,9 @@ const styles = StyleSheet.create({
         flexDirection:'row',
     },
     text:{
-        fontFamily: [latoFont, "sans-serif"],
+        fontFamily:'Lato',
+        fontWeight:'bold',
+        fontSize:'1em',
         justifyContent:'center',
         alignItems:'center',
         display:'flex',
