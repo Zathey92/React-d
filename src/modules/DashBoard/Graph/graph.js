@@ -58,6 +58,9 @@ const getGraphData = (data,width,minWidth)=>{
                 name:sprint.project,
                 url:sprint.url,
                 value:sprint.monthsFromNow+1,
+                due:sprint.due,
+                listName:sprint.sprint,
+                userName: name,
             }
         });
         groups.push(<GraphGroup minWidth={minWidth} width={width} getColor={getColor} key={name} data ={groupData} />);

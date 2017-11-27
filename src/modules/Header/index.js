@@ -10,7 +10,7 @@ import {fetchDashboard} from "../DashBoard/actions/index";
 class Header extends Component{
 
     render() {
-        const action = ()=>{
+        const homeAction = ()=>{
             if(!this.props.isAuthorized){
                 this.props.authorize();
                 this.props.fetchDashboard();
@@ -20,7 +20,7 @@ class Header extends Component{
         };
         return (
             <div className={css(styles.container)}>
-                <Link onClick={action.bind(this)} to='/' className={css(styles.productTitle)}>Dallo</Link>
+                <Link onClick={homeAction.bind(this)} to='/' className={css(styles.productTitle)}>Dallo</Link>
                 <div className={css(styles.title)}>
                     DashBoard
                 </div>

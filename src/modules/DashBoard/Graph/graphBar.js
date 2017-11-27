@@ -1,16 +1,29 @@
 import React, { Component } from 'react';
+import moment from 'moment';
+import ReactTooltip from 'react-tooltip'
 import {css, StyleSheet} from 'aphrodite';
 
 class GraphBar extends Component {
 
     render() {
+        let identifier = this.props.userName+this.props.listName;
+        let colorId = this.props.listName;
         return (
-
-            <a target="_blank" href={this.props.url} style={{minWidth:100,width:(this.props.width*25)+'%'}} className={css(styles.bar)}>
-                <div style={{backgroundColor:this.props.getColor(this.props.name+this.props.width)}} className={css(styles.border)}>
-                    <div className={css(styles.text)}> {this.props.name}</div>
-                </div>
-            </a>
+            <div>
+                <a data-tip data-for={identifier} target="_blank" href={this.props.url} style={{minWidth:100,width:(this.props.width*25)+'%'}} className={css(styles.bar)}>
+                    <div style={{backgroundColor:this.props.getColor(colorId)}} className={css(styles.border)}>
+                        <div className={css(styles.text)}> {this.props.name}</div>
+                    </div>
+                </a>
+                <ReactTooltip id={identifier} aria-haspopup={'true'} role='Sprint-info'>
+                    <p><b>Persona: </b>{this.props.userName}</p>
+                    <p><b>Proyecto: </b>{this.props.name}</p>
+                    <ul>
+                        <li>{'Sprint: '+this.props.listName }</li>
+                        <li>{'Finalización: '+moment(this.props.due).format("DD/MM/YYYY") }</li>
+                    </ul>
+                </ReactTooltip>
+            </div>
 
 
         );

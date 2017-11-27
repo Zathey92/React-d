@@ -51,7 +51,7 @@ export const  fetchSprintsPerMember = (sprints, allMembers) => async (dispatch, 
                         [month]: {
                             [list.lname]: {
                                 bname: list.bname,
-                                //lname: list.lname,
+                                lname: list.lname,
                                 url: list.url,
                                 due: maxDue
                             }
